@@ -15,6 +15,7 @@ class RiverpodRouterDelegate extends RouterDelegate<Uri> with ChangeNotifier {
 
   final NavigationNotifier notifier;
   final RouteDefinition routes;
+
   RemoveListener? _removeListener;
 
   @override // From PopNavigatorRouterDelegateMixin.

@@ -6,6 +6,7 @@ export 'src/parsing/path_segment.dart';
 export 'src/parsing/query_parameter.dart';
 export 'src/parsing/template.dart';
 
+export 'src/routing/pop_behaviour.dart';
 export 'src/routing/route_definition.dart';
 export 'src/routing/router_delegate.dart';
 
@@ -16,4 +17,4 @@ export 'src/notifier.dart';
 export 'src/providers.dart';
 export 'src/state.dart';
 export 'src/state.dart';
-export 'src/url_rewriting.dart';
+export 'src/url_rewriter.dart';

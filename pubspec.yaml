@@ -1,6 +1,6 @@
 name: riverpod_navigation
 description: Managing Flutter navigation with riverpod.
-version: 0.1.0-prerelease
+version: 0.1.1-prerelease
 homepage: https://github.com/aloisdeniel/riverpod_navigation
 
 environment:

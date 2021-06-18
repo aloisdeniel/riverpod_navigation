@@ -11,17 +11,20 @@ typedef Page RiverpodPageBuilder(
 
 class RouteDefinition extends Equatable {
   RouteDefinition({
+    this.key,
     required this.template,
     required this.builder,
     this.next = const <RouteDefinition>[],
   });
 
   final UriTemplate template;
+  final Key? key;
   final RiverpodPageBuilder builder;
   final List<RouteDefinition> next;
 
   @override
   List<Object?> get props => [
+        key,
         template,
         builder,
         next,

@@ -73,6 +73,10 @@ class UriTemplate extends Equatable {
     );
   }
 
+  bool get isDynamic => pathSegments.any(
+        (segment) => segment is DynamicPathSegmentTemplate,
+      );
+
   Uri buildUri(
     Map<String, String> parameters, {
     bool withQueryString = true,

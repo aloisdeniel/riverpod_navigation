@@ -73,3 +73,39 @@ Widget build(BuildContext context) {
     );
 }
 ```
+
+### Pop behaviour
+
+To customize the behaviour of pops when navigating back, a `PopBehavior` callback can be provided to the `RiverpodNavigation` instance. The result indicates whether the current pop action should be updated, cancelled or auto (*default behavior which simply replace the route with the parent one*).
+
+```dart
+ RiverpodNavigation(
+    popBehaviour: (notifier, stack) {
+        if (stack.lastRoute?.key == Key('share-article')) {
+          return PopResult.update(Uri.parse('/'));
+        }
+        return PopResult.auto();
+      },
+    // ...
+ )
+```
+
+### URI rewriting
+
+The uri can be modified before they are processed by the router with the `uriRewriter` property. This can be useful for redirecting or normalizing uris.
+
+```dart
+ RiverpodNavigation(
+    uriRewriter: (notifier, uri) {
+        if (uri == Uri.parse('/home')) {
+            return Uri.parse('/');
+        }
+        const publicPrefix = 'https://example.com';
+        final stringUri = uri.toString();
+        if (stringUri.startsWith(publicPrefix)) {
+            return Uri.parse(stringUri.substring(publicPrefix.length);
+        }
+        return uri;
+    },
+    // ...
+);

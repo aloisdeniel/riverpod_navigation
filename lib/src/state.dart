@@ -23,6 +23,11 @@ class NavigationStack extends Equatable {
 
   final List<NavigationEntry> history;
 
+  RouteDefinition? get lastRoute {
+    if (history.isEmpty) return null;
+    return history.last.route;
+  }
+
   @override
   List<Object?> get props => [
         history,
