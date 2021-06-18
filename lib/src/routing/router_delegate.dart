@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -15,6 +16,9 @@ class RiverpodRouterDelegate extends RouterDelegate<Uri> with ChangeNotifier {
   final NavigationNotifier notifier;
   final RouteDefinition routes;
   RemoveListener? _removeListener;
+
+  @override // From PopNavigatorRouterDelegateMixin.
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void addListener(VoidCallback listener) {
@@ -39,7 +43,7 @@ class RiverpodRouterDelegate extends RouterDelegate<Uri> with ChangeNotifier {
 
   @override
   Future<bool> popRoute() {
-    return Future.value(notifier.pop());
+    return SynchronousFuture(notifier.pop());
   }
 
   @override
@@ -65,11 +69,15 @@ class RiverpodRouterDelegate extends RouterDelegate<Uri> with ChangeNotifier {
       stateNotifier: notifier,
       builder: (BuildContext context, NavigationState state, Widget? child) {
         return Navigator(
+          key: navigatorKey,
           pages: _buildPages(
             context,
             state.current,
           ),
-          onPopPage: (route, result) => notifier.pop(),
+          onPopPage: (route, result) {
+            notifier.pop();
+            return false;
+          },
         );
       },
     );

@@ -14,8 +14,10 @@ class NavigationNotifier extends StateNotifier<NavigationState> {
           ),
         );
 
+  bool get canPop => state.current.history.length > 1;
+
   bool pop() {
-    if (state.current.history.length > 1) {
+    if (canPop) {
       state = NavigationState(
         routes: state.routes,
         current: NavigationStack(
