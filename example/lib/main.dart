@@ -1,8 +1,11 @@
+import 'package:example/layouts/about.dart';
 import 'package:example/layouts/article.dart';
 import 'package:example/layouts/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_navigation/riverpod_navigation.dart';
+
+import 'layouts/share.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,6 +27,22 @@ class MyApp extends StatelessWidget {
             child: ArticleLayout(
               id: entry.parameters['id']!,
             ),
+          ),
+          next: [
+            RouteDefinition(
+              template: UriTemplate.parse('/share'),
+              builder: (context, entry) => MaterialPage(
+                child: ShareLayout(
+                  articleId: entry.parameters['id']!,
+                ),
+              ),
+            ),
+          ],
+        ),
+        RouteDefinition(
+          template: UriTemplate.parse('/about'),
+          builder: (context, entry) => MaterialPage(
+            child: AboutLayout(),
           ),
         ),
       ],

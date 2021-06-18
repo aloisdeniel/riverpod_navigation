@@ -1,11 +1,11 @@
 name: riverpod_navigation
-description: A new Flutter package project.
-version: 0.0.1
-homepage:
+description: Managing Flutter navigation with riverpod.
+version: 0.1.0-prerelease
+homepage: https://github.com/aloisdeniel/riverpod_navigation
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.17.0"
+  flutter: ">=2.0.0"
 
 dependencies:
   equatable: ^2.0.3
