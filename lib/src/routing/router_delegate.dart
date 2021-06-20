@@ -7,7 +7,8 @@ import 'package:riverpod_navigation/src/routing/route_definition.dart';
 
 import '../state.dart';
 
-class RiverpodRouterDelegate extends RouterDelegate<Uri> with ChangeNotifier {
+class RiverpodRouterDelegate extends RouterDelegate<Uri>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   RiverpodRouterDelegate({
     required this.notifier,
     required this.routes,
@@ -18,7 +19,7 @@ class RiverpodRouterDelegate extends RouterDelegate<Uri> with ChangeNotifier {
 
   RemoveListener? _removeListener;
 
-  @override // From PopNavigatorRouterDelegateMixin.
+  @override
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
@@ -59,9 +60,26 @@ class RiverpodRouterDelegate extends RouterDelegate<Uri> with ChangeNotifier {
         (entry) => entry.route.builder(
           context,
           entry,
+          entry.tabs.map((t) => _buildNavigator(context, t, false)).toList(),
+          entry.activeTab,
         ),
       )
     ];
+  }
+
+  Navigator _buildNavigator(
+      BuildContext context, NavigationStack stack, bool isRoot) {
+    return Navigator(
+      key: isRoot ? navigatorKey : null,
+      pages: _buildPages(
+        context,
+        stack,
+      ),
+      onPopPage: (route, result) {
+        notifier.pop();
+        return false;
+      },
+    );
   }
 
   @override
@@ -69,17 +87,7 @@ class RiverpodRouterDelegate extends RouterDelegate<Uri> with ChangeNotifier {
     return StateNotifierBuilder<NavigationState>(
       stateNotifier: notifier,
       builder: (BuildContext context, NavigationState state, Widget? child) {
-        return Navigator(
-          key: navigatorKey,
-          pages: _buildPages(
-            context,
-            state.current,
-          ),
-          onPopPage: (route, result) {
-            notifier.pop();
-            return false;
-          },
-        );
+        return _buildNavigator(context, state.current, true);
       },
     );
   }

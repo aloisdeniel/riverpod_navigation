@@ -2,10 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:riverpod_navigation/riverpod_navigation.dart';
 
-class HomeLayout extends StatelessWidget {
+class HomeLayout extends StatefulWidget {
   const HomeLayout({
     Key? key,
+    required this.activeTab,
+    required this.tabs,
   }) : super(key: key);
+
+  final int activeTab;
+  final List<Navigator> tabs;
+
+  @override
+  _HomeLayoutState createState() => _HomeLayoutState();
+}
+
+class _HomeLayoutState extends State<HomeLayout> {
+  late final pageController = PageController(initialPage: widget.activeTab);
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeLayout oldWidget) {
+    if (pageController.position.hasViewportDimension &&
+        widget.activeTab != pageController.page) {
+      pageController.animateToPage(
+        widget.activeTab,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,21 +52,31 @@ class HomeLayout extends StatelessWidget {
           )
         ],
       ),
-      body: Container(
-        child: ListView(
-          children: [
-            ListTile(
-              title: Text('Article 1'),
-              onTap: () =>
-                  context.navigation.navigate(Uri.parse('/articles/1')),
-            ),
-            ListTile(
-              title: Text('Article 2'),
-              onTap: () =>
-                  context.navigation.navigate(Uri.parse('/articles/2')),
-            ),
-          ],
-        ),
+      body: PageView(
+        controller: pageController,
+        children: [
+          ...widget.tabs,
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: context.navigation.activeTabForRoute(Key('Home')) ?? 0,
+        onTap: (index) {
+          context.navigation.setActiveTabForRoute(Key('Home'), index);
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.grid_3x3),
+            label: 'Articles',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shop),
+            label: 'Shop',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Account',
+          ),
+        ],
       ),
     );
   }

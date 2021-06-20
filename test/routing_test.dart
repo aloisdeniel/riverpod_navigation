@@ -3,7 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:riverpod_navigation/riverpod_navigation.dart';
 
-Page mockBuilder(BuildContext x, NavigationEntry y) => MaterialPage(
+Page mockBuilder(
+  BuildContext x,
+  NavigationEntry y,
+  List<Navigator> tabs,
+  int activeTab,
+) =>
+    MaterialPage(
       child: SizedBox(),
     );
 
@@ -31,7 +37,7 @@ void main() {
     );
 
     final uri = Uri.parse('/articles/46/share');
-    final result = route.evaluate(uri);
+    final result = route.evaluate(null, uri);
     expect(result == null, isFalse);
     expect(result!.history.length, equals(3));
     expect(result.history.last.parameters['id'], equals('46'));
@@ -60,18 +66,18 @@ void main() {
     );
 
     var uri = Uri.parse('/');
-    expect(route.evaluate(uri)!.toUri(), equals(uri));
+    expect(route.evaluate(null, uri)!.toUri(), equals(uri));
 
     uri = Uri.parse('/about');
-    expect(route.evaluate(uri)!.toUri(), equals(uri));
+    expect(route.evaluate(null, uri)!.toUri(), equals(uri));
 
     uri = Uri.parse('/articles/46/share');
-    expect(route.evaluate(uri)!.toUri(), equals(uri));
+    expect(route.evaluate(null, uri)!.toUri(), equals(uri));
 
     uri = Uri.parse('/articles/46/share?email=a');
-    expect(route.evaluate(uri)!.toUri(), equals(uri));
+    expect(route.evaluate(null, uri)!.toUri(), equals(uri));
 
     uri = Uri.parse('/articles/46/share?email=a&body=b');
-    expect(route.evaluate(uri)!.toUri(), equals(uri));
+    expect(route.evaluate(null, uri)!.toUri(), equals(uri));
   });
 }

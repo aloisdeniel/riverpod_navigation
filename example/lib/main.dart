@@ -1,6 +1,9 @@
 import 'package:example/layouts/about.dart';
 import 'package:example/layouts/article.dart';
 import 'package:example/layouts/home.dart';
+import 'package:example/layouts/tabs/all_articles.dart';
+import 'package:example/layouts/tabs/shop.dart';
+import 'package:example/layouts/tabs/user.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_navigation/riverpod_navigation.dart';
 
@@ -15,25 +18,49 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final routes = RouteDefinition(
+      key: Key('Home'),
       template: UriTemplate.parse('/'),
-      builder: (context, entry) => MaterialPage(
-        child: HomeLayout(),
+      builder: (context, entry, tabs, activeTab) => MaterialPage(
+        child: HomeLayout(
+          activeTab: activeTab,
+          tabs: tabs,
+        ),
       ),
+      tabs: [
+        RouteDefinition(
+          template: UriTemplate.parse('/all-articles'),
+          builder: (context, entry, tabs, activeTab) => MaterialPage(
+            child: AllArticlesLayout(),
+          ),
+        ),
+        RouteDefinition(
+          template: UriTemplate.parse('/shop'),
+          builder: (context, entry, tabs, activeTab) => MaterialPage(
+            child: ShopLayout(),
+          ),
+        ),
+        RouteDefinition(
+          template: UriTemplate.parse('/user'),
+          builder: (context, entry, tabs, activeTab) => MaterialPage(
+            child: UserLayout(),
+          ),
+        ),
+      ],
       next: [
         RouteDefinition(
           template: UriTemplate.parse('/articles/:id'),
-          builder: (context, entry) => MaterialPage(
+          builder: (context, entry, tabs, activeTab) => MaterialPage(
             child: ArticleLayout(
-              id: entry.parameters['id']!,
+              id: entry.parameter('id'),
             ),
           ),
           next: [
             RouteDefinition(
               template: UriTemplate.parse('/share'),
               key: Key('share'),
-              builder: (context, entry) => MaterialPage(
+              builder: (context, entry, tabs, activeTab) => MaterialPage(
                 child: ShareLayout(
-                  articleId: entry.parameters['id']!,
+                  articleId: entry.parameter('id'),
                 ),
               ),
             ),
@@ -41,7 +68,7 @@ class MyApp extends StatelessWidget {
         ),
         RouteDefinition(
           template: UriTemplate.parse('/about'),
-          builder: (context, entry) => MaterialPage(
+          builder: (context, entry, tabs, activeTab) => MaterialPage(
             child: AboutLayout(),
           ),
         ),

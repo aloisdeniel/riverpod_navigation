@@ -150,7 +150,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.1.1-prerelease"
+    version: "0.2.0-prerelease"
   sky_engine:
     dependency: transitive
     description: flutter

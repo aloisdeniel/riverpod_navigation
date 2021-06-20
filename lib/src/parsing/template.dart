@@ -33,6 +33,22 @@ class UriTemplate extends Equatable {
   final List<PathSegmentTemplate> pathSegments;
   final List<QueryParameterTemplate> queryParameters;
 
+  bool hasParameter(String name) {
+    for (var pathSegment in pathSegments) {
+      if (pathSegment is DynamicPathSegmentTemplate) {
+        if (name == pathSegment.name) return true;
+      }
+    }
+
+    for (var queryParameter in queryParameters) {
+      if (queryParameter is QueryParameterTemplate) {
+        if (name == queryParameter.name) return true;
+      }
+    }
+
+    return false;
+  }
+
   UriTemplate operator +(UriTemplate other) {
     return UriTemplate(
       pathSegments: [

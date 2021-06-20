@@ -1,3 +1,7 @@
+## 0.2.0-prerelease
+
+* Added tabs management for navigation entry.
+
 ## 0.1.1-prerelease
 
 * Added pop behaviour and url rewriter.

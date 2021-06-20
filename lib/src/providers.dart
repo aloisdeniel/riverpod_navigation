@@ -24,9 +24,9 @@ final navigationProvider =
     final routes = ref.watch(routesProvider);
     final popBehaviour = ref.watch(popBehaviourProvider);
     final uriRewriter = ref.watch(uriRewriterProvider);
-    final initialUrl = Uri.parse('/');
+    final initialUrl = routes.template.buildUri(const <String, String>{});
 
-    final entry = routes.evaluate(initialUrl);
+    final entry = routes.evaluate(null, initialUrl);
     if (entry == null) {
       throw Exception('No route found for initial route "/"');
     }
