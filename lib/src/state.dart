@@ -37,8 +37,16 @@ class NavigationStack extends Equatable {
   }
 
   RouteDefinition? get lastRoute {
-    if (history.isEmpty) return null;
-    return history.last.route;
+    if (history.isEmpty) {
+      return null;
+    }
+    final lastEntry = history.last;
+    if (lastEntry.tabs.isNotEmpty) {
+      final currentTab = lastEntry.tabs[lastEntry.activeTab];
+      return currentTab.lastRoute;
+    }
+
+    return lastEntry.route;
   }
 
   @override

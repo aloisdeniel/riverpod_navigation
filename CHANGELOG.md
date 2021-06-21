@@ -1,3 +1,7 @@
+## 0.2.2-prerelease
+
+* Fixed `lastRoute` not pointing to selected tabs.
+
 ## 0.2.1-prerelease
 
 * Removed auto selecting tab when navigation inside a tab internal route.
