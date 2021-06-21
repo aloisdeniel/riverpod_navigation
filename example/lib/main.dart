@@ -3,6 +3,7 @@ import 'package:example/layouts/article.dart';
 import 'package:example/layouts/home.dart';
 import 'package:example/layouts/tabs/all_articles.dart';
 import 'package:example/layouts/tabs/shop.dart';
+import 'package:example/layouts/tabs/update_profile.dart';
 import 'package:example/layouts/tabs/user.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_navigation/riverpod_navigation.dart';
@@ -44,6 +45,14 @@ class MyApp extends StatelessWidget {
           builder: (context, entry, tabs, activeTab) => MaterialPage(
             child: UserLayout(),
           ),
+          next: [
+            RouteDefinition(
+              template: UriTemplate.parse('/update-profile'),
+              builder: (context, entry, tabs, activeTab) => MaterialPage(
+                child: UpdateProfileLayout(),
+              ),
+            ),
+          ],
         ),
       ],
       next: [

@@ -43,14 +43,12 @@ class RouteDefinition extends Equatable {
       previous,
       null,
       uri,
-      () {},
     );
   }
 
   List<NavigationStack> _buildDefaultTabs(
     UriTemplate parent,
     Uri uri,
-    void onTabSelected(int index),
   ) =>
       [
         ...tabs.map(
@@ -64,7 +62,6 @@ class RouteDefinition extends Equatable {
                       null,
                       parent + t.template,
                       uri,
-                      onTabSelected,
                     )
                     .toList(),
               ),
@@ -77,10 +74,9 @@ class RouteDefinition extends Equatable {
     List<NavigationStack>? previous,
     UriTemplate parent,
     Uri uri,
-    void onTabSelected(int index),
   ) sync* {
-    previous = previous ?? _buildDefaultTabs(parent, uri, onTabSelected);
-    ;
+    previous = previous ?? _buildDefaultTabs(parent, uri);
+
     for (var i = 0; i < tabs.length; i++) {
       final tabRoute = tabs[i];
       final previousTabStack = previous[i];
@@ -88,7 +84,6 @@ class RouteDefinition extends Equatable {
             previousTabStack,
             parent,
             uri,
-            () => onTabSelected(i),
           ) ??
           previousTabStack;
     }
@@ -98,7 +93,6 @@ class RouteDefinition extends Equatable {
     NavigationStack? previous,
     UriTemplate? parent,
     Uri uri,
-    void onMatch(),
   ) {
     var template = this.template;
 
@@ -114,14 +108,10 @@ class RouteDefinition extends Equatable {
       (previous?.history.isEmpty ?? true ? null : previous!.history.first.tabs),
       template,
       uri,
-      (index) {
-        activeTab = index;
-      },
     ).toList();
 
     final currentMatch = template.match(uri);
     if (currentMatch is SuccessTemplateMatch) {
-      onMatch();
       return NavigationStack(
         history: [
           NavigationEntry(
@@ -148,7 +138,6 @@ class RouteDefinition extends Equatable {
                   )),
         template,
         uri,
-        onMatch,
       );
       if (nextResult != null) {
         return NavigationStack(
