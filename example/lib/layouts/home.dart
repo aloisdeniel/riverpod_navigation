@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_navigation/riverpod_navigation.dart';
 
-class HomeLayout extends StatefulWidget {
+class HomeLayout extends ConsumerStatefulWidget {
   const HomeLayout({
     Key? key,
     required this.activeTab,
@@ -16,7 +17,7 @@ class HomeLayout extends StatefulWidget {
   _HomeLayoutState createState() => _HomeLayoutState();
 }
 
-class _HomeLayoutState extends State<HomeLayout> {
+class _HomeLayoutState extends ConsumerState<HomeLayout> {
   late final pageController = PageController(initialPage: widget.activeTab);
 
   @override
@@ -48,7 +49,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         actions: [
           IconButton(
             icon: Icon(Icons.help),
-            onPressed: () => context.navigation.navigate(Uri.parse('/about')),
+            onPressed: () => ref.navigation.navigate(Uri.parse('/about')),
           )
         ],
       ),
@@ -59,9 +60,9 @@ class _HomeLayoutState extends State<HomeLayout> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: context.navigation.activeTabForRoute(Key('Home')) ?? 0,
+        currentIndex: ref.navigation.activeTabForRoute(Key('Home')) ?? 0,
         onTap: (index) {
-          context.navigation.setActiveTabForRoute(Key('Home'), index);
+          ref.navigation.setActiveTabForRoute(Key('Home'), index);
         },
         items: [
           BottomNavigationBarItem(
