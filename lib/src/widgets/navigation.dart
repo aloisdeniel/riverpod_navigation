@@ -37,8 +37,8 @@ class RiverpodNavigation extends StatelessWidget {
         uriRewriterProvider.overrideWithValue(uriRewriter)
       ],
       child: Consumer(
-        builder: (context, watch, child) {
-          final notifier = watch(navigationProvider.notifier);
+        builder: (context, ref, child) {
+          final notifier = ref.watch(navigationProvider.notifier);
           return builder(
             context,
             RiverpodRouterDelegate(
